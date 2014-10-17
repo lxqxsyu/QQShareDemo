@@ -1,5 +1,7 @@
 package com.example.tencentshare;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 
@@ -85,29 +87,34 @@ public class QQShareManager {
 	private void shareWebPage(int shareType, ShareContent shareContent){
 		Bundle params = new Bundle();
 		if(shareType == QQ_SHARE_TYPE_ZONE){
-			shareWebPageQQ(shareContent, params);
-		}else{
 			shareWebPageQzone(shareContent, params);
+		}else{
+			shareWebPageQQ(shareContent, params);
 		}
 	}
 
-	private void shareWebPageQzone(ShareContent shareContent, Bundle params) {
+	private void shareWebPageQQ(ShareContent shareContent, Bundle params) {
 		params.putString(QQShare.SHARE_TO_QQ_TITLE, shareContent.getTitle());
 		params.putString(QQShare.SHARE_TO_QQ_SUMMARY, shareContent.getContent());
 		params.putInt(QQShare.SHARE_TO_QQ_KEY_TYPE,
 				QQShare.SHARE_TO_QQ_TYPE_DEFAULT);
 		params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, shareContent.getURL());
 		params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, shareContent.getPicUrl());
+		
 		doShareToQQ(context, params, iUiListener);
 	}
 
-	private void shareWebPageQQ(ShareContent shareContent, Bundle params) {
+	private void shareWebPageQzone(ShareContent shareContent, Bundle params) {
 		params.putString(QzoneShare.SHARE_TO_QQ_TITLE, shareContent.getTitle());
 		params.putString(QzoneShare.SHARE_TO_QQ_SUMMARY, shareContent.getContent());
 		params.putInt(QzoneShare.SHARE_TO_QZONE_KEY_TYPE, 
 				QzoneShare.SHARE_TO_QZONE_TYPE_IMAGE_TEXT);
 		params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, shareContent.getURL());
-		params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, shareContent.getPicUrl());
+		ArrayList<String> imageUrls = new ArrayList<String>();
+		imageUrls.add(shareContent.getPicUrl());
+		params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imageUrls);
+		//params.putString(QzoneShare.SHARE_TO_QQ_IMAGE_URL, shareContent.getPicUrl());
+		
 		doShareToQzone(context, params, iUiListener);
 	}
 	
